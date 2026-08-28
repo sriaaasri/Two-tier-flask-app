@@ -32,7 +32,7 @@ pipeline{
             steps{
 
                 sh """
-                    docker compose up -p flask-app -d
+                    docker compose -p flask-app up  -d
                 """
             }
         }
