@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
-
+from database import connection
 load_dotenv()
 
 app = Flask(__name__)
@@ -27,6 +27,10 @@ def init_db():
         ''')
         mysql.connection.commit()  
         cur.close()
+        aws_cur=connection.cursor()
+        aws_cur.execute('SELECT VERSION();')
+        print(aws_cur.fetchone()[0])
+        aws_cur.close()
 
 @app.route('/')
 def hello():
