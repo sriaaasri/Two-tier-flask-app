@@ -4,6 +4,11 @@ pipeline{
     environment{
 
         DOCKER_IMAGE_NAME="flask-app:latest"
+        MYSQL_HOST="localhost"
+        MYSQL_USER="root"
+        MYSQL_PASSWORD="Deadman@2001"
+        MYSQL_DB="flask"
+        
     }
     stages{
         stage("checkout SCM"){
@@ -17,9 +22,26 @@ pipeline{
             steps{
 
                 sh """
-                    pwd
-                    ls -l
-                    echo $DOCKER_IMAGE_NAME
+                    set -eo
+                   docker build -t $DOCKER_IMAGE_NAME 
+                """
+            }
+        }
+
+        stage("Compose up"){
+            steps{
+
+                sh """
+                    docker compose up -p flask-app -d
+                """
+            }
+        }
+
+        stage("verify"){
+
+            steps{
+                sh """
+                        docker ps
                 """
             }
         }

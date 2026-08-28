@@ -27,8 +27,9 @@ services:
 
   flask-app:
     container_name: two-tier-app
-    build:
-      context: .
+    # build:
+    #   context: .
+    image: $DOCKER_IMAGE_NAME
 
     ports:
       - "5000:5000"
