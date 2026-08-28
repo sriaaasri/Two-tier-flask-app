@@ -23,7 +23,7 @@ pipeline{
 
                 sh """
                     set -eo
-                   docker build -t $DOCKER_IMAGE_NAME 
+                   docker build -t $DOCKER_IMAGE_NAME .
                 """
             }
         }
