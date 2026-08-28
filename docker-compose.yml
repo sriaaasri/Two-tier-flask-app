@@ -9,6 +9,14 @@ services:
       MYSQL_DATABASE: ${MYSQL_DB}
     ports:
       - "3307:3306"
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
 
     volumes:
       - mysql_data:/var/lib/mysql
