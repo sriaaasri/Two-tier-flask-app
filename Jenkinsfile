@@ -6,9 +6,9 @@ pipeline{
     environment{
 
         DOCKER_IMAGE_NAME="flask-app:latest"
-        MYSQL_HOST="localhost"
+        MYSQL_HOST="mysql"
         MYSQL_USER="root"
-        MYSQL_PASSWORD="Deadman@2001"
+        MYSQL_PASSWORD="rootpass"
         MYSQL_DB="flask"
         
     }
