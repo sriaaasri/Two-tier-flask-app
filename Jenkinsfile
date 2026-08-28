@@ -16,6 +16,7 @@ pipeline{
         stage("checkout SCM"){
 
             steps{
+                sh "whoami"
                 checkout scm
             }
         }
@@ -24,6 +25,7 @@ pipeline{
             steps{
 
                 sh """
+                    whoami
                     set -eo
                    docker build -t $DOCKER_IMAGE_NAME .
                 """
@@ -34,6 +36,7 @@ pipeline{
             steps{
 
                 sh """
+                    whoami
                     docker compose -p flask-app up  -d
                 """
             }
@@ -43,6 +46,7 @@ pipeline{
 
             steps{
                 sh """
+                        whoami
                         docker ps
                 """
             }
