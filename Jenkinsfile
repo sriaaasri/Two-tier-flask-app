@@ -1,5 +1,10 @@
 pipeline{
     agent any
+
+    environment{
+
+        DOCKER_IMAGE_NAME="flask-app:latest"
+    }
     stages{
         stage("checkout SCM"){
 
@@ -14,6 +19,7 @@ pipeline{
                 sh """
                     pwd
                     ls -l
+                    echo $DOCKER_IMAGE_NAME
                 """
             }
         }
