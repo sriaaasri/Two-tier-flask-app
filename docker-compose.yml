@@ -17,6 +17,7 @@ services:
         reservations:
           cpus: "0.25"
           memory: 256M
+          
 
     volumes:
       - mysql_data:/var/lib/mysql
