@@ -1,0 +1,6 @@
+.env
+_pycache_
+.venv
+README.md
+Jenkinsfile
+docker-compose.yml
