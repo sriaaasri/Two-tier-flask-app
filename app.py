@@ -1,53 +1,62 @@
-import os
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-from flask_mysqldb import MySQL
+# import os
+from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-from database import connection
+from db.mysql  import get_connection
 load_dotenv()
 
 app = Flask(__name__)
 
-# Configure MySQL from environment variables
-app.config['MYSQL_HOST'] = os.environ.get('MYSQL_HOST', 'localhost')
-app.config['MYSQL_USER'] = os.environ.get('MYSQL_USER', 'default_user')
-app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQL_PASSWORD', 'default_password')
-app.config['MYSQL_DB'] = os.environ.get('MYSQL_DB', 'default_db')
-
-# Initialize MySQL
-mysql = MySQL(app)
+def rds_test():
+    rds_connection = None
+    cursor = None
+    print("RDS_TEST started")
+    try:
+        rds_connection = get_connection()
+        cursor = rds_connection.cursor()
+        cursor.execute('SELECT VERSION();')
+        print("MYSQL version: ",cursor.fetchone()[0])
+        cursor.close()
+    except Exception as e:
+        print("AWS MYSQL Database error: ", e);
+        raise
+    finally:
+        if cursor:
+            cursor.close()
+        if rds_connection:
+            rds_connection.close()
 
 def init_db():
-    with app.app_context():
-        cur = mysql.connection.cursor()
+    with get_connection() as connection:
+        cur = connection.cursor()
         cur.execute('''
         CREATE TABLE IF NOT EXISTS messages (
             id INT AUTO_INCREMENT PRIMARY KEY,
             message TEXT
         );
         ''')
-        mysql.connection.commit()  
+        connection.commit()  
         cur.close()
-        aws_cur=connection.cursor()
-        aws_cur.execute('SELECT VERSION();')
-        print(aws_cur.fetchone()[0])
-        aws_cur.close()
+
+        # rds_test()
 
 @app.route('/')
 def hello():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT message FROM messages')
-    messages = cur.fetchall()
-    cur.close()
-    return render_template('index.html', messages=messages)
+    with get_connection() as connection:
+        cur = connection.cursor()
+        cur.execute('SELECT message FROM messages')
+        messages = cur.fetchall()
+        cur.close()
+        return render_template('index.html', messages=messages)
 
 @app.route('/submit', methods=['POST'])
 def submit():
     new_message = request.form.get('new_message')
-    cur = mysql.connection.cursor()
-    cur.execute('INSERT INTO messages (message) VALUES (%s)', [new_message])
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({'message': new_message})
+    with get_connection() as connection:
+        cur = connection.cursor()
+        cur.execute('INSERT INTO messages (message) VALUES (%s)', [new_message])
+        connection.commit()
+        cur.close()
+        return jsonify({'message': new_message})
 
 if __name__ == '__main__':
     init_db()
