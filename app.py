@@ -9,7 +9,7 @@ app = Flask(__name__)
 def rds_test():
     rds_connection = None
     cursor = None
-    print("RDS_TEST starteded ")
+    print("RDS_TEST started")
     try:
         rds_connection = get_connection()
         cursor = rds_connection.cursor()
