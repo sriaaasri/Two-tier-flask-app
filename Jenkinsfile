@@ -6,7 +6,7 @@ pipeline{
 
         DOCKER_IMAGE_NAME="flask-app"
         DOCKER_REPO="chowdary2001"
-        DOCKER_IMAGE_TAG="${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:latest"
+        // DOCKER_IMAGE_TAG="${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:latest"
         GIT_BRANCH_NAME = "feature/jenkins"
         GIT_URL = "https://github.com/sriaaasri/Two-tier-flask-app.git"
     }
