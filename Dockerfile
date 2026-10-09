@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir -r requirement.txt
 ENV MYSQL_HOST=flask.cjgm26qi2gu4.ap-south-2.rds.amazonaws.com
 ENV MYSQL_USER=admin
 ENV MYSQL_PASSWORD=Deadman$2001
-ENV MYSQL_DB=flask
+ENV MYSQL_DATABASE=flask
 
 COPY . .
 
