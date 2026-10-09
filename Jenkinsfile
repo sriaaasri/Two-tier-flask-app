@@ -42,6 +42,9 @@ pipeline{
         }
 
         stage("Python Setup"){
+            when{
+                expression { false }
+            }
             steps{
                 
                 sh '''
@@ -59,7 +62,7 @@ pipeline{
                 withDockerRegistry(credentialsId: 'docker-credentials' , url: ''){
                 sh """
                     docker images
-                    docker build -t ${DOCKER_IMAGE_TAG} .
+                    docker build -t '${DOCKER_IMAGE_TAG}' .
                 """
 
                 sh """
