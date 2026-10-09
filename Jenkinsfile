@@ -23,7 +23,7 @@ pipeline{
 
         stage("check"){
             steps{
-                echo "Second stage"
+                echo "Second stage testing webhook"
                 sh "ls -l"
                 
             }
