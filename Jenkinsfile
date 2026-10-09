@@ -30,10 +30,8 @@ pipeline{
                 )
 
                 script{
-                    env.GIT_COMMIT_SHORT=sh(
-                        script: 'git rev-parse --short=8 HEAD',
-                        returnStdout: true
-                    )
+                    def commitHash = sh(script: 'git rev-parse --short=8 HEAD',returnStdout: true).trim()
+                    env.GIT_COMMIT_SHORT=${commitHash}
                     env.DOCKER_IMAGE_TAG = "${DOCKER_REPO}/${env.DOCKER_IMAGE_NAME}:${env.GIT_COMMIT_SHORT}"
                     echo "Application commit -> '${env.GIT_COMMIT_SHORT}'"
                     echo "Image tag -> '${env.DOCKER_IMAGE_TAG}'"
