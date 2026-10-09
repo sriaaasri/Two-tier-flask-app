@@ -5,7 +5,8 @@ pipeline{
     environment{
 
         DOCKER_IMAGE_NAME="flask-app"
-        DOCKER_IMAGE_TAG="${DOCKER_IMAGE_NAME}:latest"
+        DOCKER_REPO="chowdary2001"
+        DOCKER_IMAGE_TAG="${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:latest"
         GIT_BRANCH_NAME = "feature/jenkins"
         GIT_URL = "https://github.com/sriaaasri/Two-tier-flask-app.git"
     }
@@ -33,7 +34,7 @@ pipeline{
                         script: 'git rev-parse --short=8 HEAD',
                         returnStdout: true
                     )
-                    env.DOCKER_IMAGE_TAG = "${env.DOCKER_IMAGE_NAME}:${env.GIT_COMMIT_SHORT}"
+                    env.DOCKER_IMAGE_TAG = "${DOCKER_REPO}/${env.DOCKER_IMAGE_NAME}:${env.GIT_COMMIT_SHORT}"
                     echo "Application commit -> ${env.GIT_COMMIT_SHORT}"
                     echo "Image tag -> ${env.DOCKER_IMAGE_TAG}"
                 }
@@ -53,8 +54,24 @@ pipeline{
                 '''
             }
         }
-        
+        stage("Docker image build"){
+            steps{
+                withDockerRegistry(credentialsId: 'docker-credentials' , url: "https://hub.docker.com/"){
+                sh """
+                    docker images
+                    docker build -t ${DOCKER_IMAGE_TAG} .
+                """
 
+                sh """
+                    docker push ${DOCKER_IMAGE_TAG}
+                """
+
+                sh """
+                    docker images 
+                """
+                }
+            }
+        }
     }
 
 
