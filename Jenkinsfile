@@ -72,7 +72,7 @@ pipeline{
             steps{
                 sshagent(['baston_prod_server']){
                     sh """
-                        ssh -o StrictHostChecking=no ubuntu@16.113.15.205 "
+                        ssh -o StrictHostKeyChecking=no ubuntu@16.113.15.205 "
                             touch test-jenkins-file.txt
                             echo "Hello from jenkins" >  test-jenkins-file.txt
                             cat  test-jenkins-file.txt
