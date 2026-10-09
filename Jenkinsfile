@@ -73,9 +73,10 @@ pipeline{
                 sshagent(['baston_prod_server']){
                     sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@16.113.15.205 "
-                            touch test-jenkins-file.txt
-                            echo "Hello from jenkins" >  test-jenkins-file.txt
-                            cat  test-jenkins-file.txt
+                            cd /home/ubuntu/flask-app
+                            ls -l
+                            ./deploy.sh ${DOCKER_IMAGE_TAG}
+                            docker ps
                         "
                     """
                 }
