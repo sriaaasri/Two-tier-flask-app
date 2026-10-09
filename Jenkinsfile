@@ -23,9 +23,12 @@ pipeline{
 
         stage("check"){
             steps{
+                echo "Second stage"
                 sh "ls -l"
+                
             }
         }
+        
 
     }
 
