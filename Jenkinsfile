@@ -6,50 +6,57 @@ pipeline{
     environment{
 
         DOCKER_IMAGE_NAME="flask-app:latest"
-        MYSQL_HOST="mysql"
-        MYSQL_USER="root"
-        MYSQL_PASSWORD="rootpass"
-        MYSQL_DB="flask"
+        GIT_BRANCH_NAME = "feature/jenkins"
+        GIT_URL = "https://github.com/sriaaasri/Two-tier-flask-app.git"
         
     }
     stages{
         stage("checkout SCM"){
 
             steps{
-                sh "whoami"
-                checkout scm
+                git (
+                    branch: env.GIT_BRANCH_NAME,
+                    url: env.GIT_URL
+
+                )
             }
         }
-        stage("build"){
-
+        stage("check"){
             steps{
-
-                sh """
-                    whoami
-                    set -eo
-                   docker build -t $DOCKER_IMAGE_NAME .
-                """
+                sh "ls -l"
             }
         }
 
-        stage("Compose up"){
-            steps{
+    //     stage("build"){
 
-                sh """
-                    whoami
-                    docker compose -p flask-app up  -d
-                """
-            }
-        }
+    //         steps{
 
-        stage("verify"){
+    //             sh """
+    //                 whoami
+    //                 set -eo
+    //                docker build -t $DOCKER_IMAGE_NAME .
+    //             """
+    //         }
+    //     }
 
-            steps{
-                sh """
-                        whoami
-                        docker ps
-                """
-            }
-        }
-    }
+    //     stage("Compose up"){
+    //         steps{
+
+    //             sh """
+    //                 whoami
+    //                 docker compose -p flask-app up  -d
+    //             """
+    //         }
+    //     }
+
+    //     stage("verify"){
+
+    //         steps{
+    //             sh """
+    //                     whoami
+    //                     docker ps
+    //             """
+    //         }
+    //     }
+    // }
 }
