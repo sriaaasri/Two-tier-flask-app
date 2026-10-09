@@ -56,7 +56,7 @@ pipeline{
         }
         stage("Docker image build"){
             steps{
-                withDockerRegistry(credentialsId: 'docker-credentials' , url: "https://hub.docker.com/"){
+                withDockerRegistry(credentialsId: 'docker-credentials' , url: ''){
                 sh """
                     docker images
                     docker build -t ${DOCKER_IMAGE_TAG} .
