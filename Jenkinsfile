@@ -35,8 +35,8 @@ pipeline{
                         returnStdout: true
                     )
                     env.DOCKER_IMAGE_TAG = "${DOCKER_REPO}/${env.DOCKER_IMAGE_NAME}:${env.GIT_COMMIT_SHORT}"
-                    echo "Application commit -> ${env.GIT_COMMIT_SHORT}"
-                    echo "Image tag -> ${env.DOCKER_IMAGE_TAG}"
+                    echo "Application commit -> '${env.GIT_COMMIT_SHORT}'"
+                    echo "Image tag -> '${env.DOCKER_IMAGE_TAG}'"
                 }
             }
         }
