@@ -59,17 +59,25 @@ pipeline{
             steps{
                 withDockerRegistry(credentialsId: 'docker-credentials' , url: ''){
                 sh """
-                    docker images
                     docker build -t '${DOCKER_IMAGE_TAG}' .
                 """
 
                 sh """
                     docker push ${DOCKER_IMAGE_TAG}
                 """
-
-                sh """
-                    docker images 
-                """
+                }
+            }
+        }
+        stage("Deploy"){
+            steps{
+                sshagent(['baston_prod_server']){
+                    sh """
+                        ssh -o StrictHostChecking=no ubuntu@16.113.15.205 "
+                            touch test-jenkins-file.txt
+                            echo "Hello from jenkins" >  test-jenkins-file.txt
+                            cat  test-jenkins-file.txt
+                        "
+                    """
                 }
             }
         }
