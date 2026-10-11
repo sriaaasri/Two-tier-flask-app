@@ -138,8 +138,8 @@ pipeline{
                 icon: '',
                 keepAll: true,
                 reportDir: "./",
-                reportFiles: "trivy-image-scan-HIGH-results.html",
-                reportName: "trivy-image-scan-HIGH-results.json",
+                reportFiles: "trivy-image-scan-HIGH-results.json",
+                reportName: "trivy-image-scan-HIGH-results.html",
                 reportTitles: ""
             ])
         }
