@@ -78,7 +78,7 @@ pipeline{
         }
         stage("Image push"){
             steps{
-                withDockerRegistory(credentialsId:'docker-credentials' , url:""){
+                withDockerRegistry(credentialsId:'docker-credentials' , url:""){
                         sh """
                             docker push ${DOCKER_IMAGE_TAG}
                         """
