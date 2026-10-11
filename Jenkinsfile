@@ -9,6 +9,9 @@ pipeline{
         // DOCKER_IMAGE_TAG="${DOCKER_REPO}/${DOCKER_IMAGE_NAME}:latest"
         GIT_BRANCH_NAME = "feature/jenkins"
         GIT_URL = "https://github.com/sriaaasri/Two-tier-flask-app.git"
+        VENV_DIR = ".venv"
+        CI = true
+        CD = false
     }
     options{
         timestamps()
@@ -39,23 +42,32 @@ pipeline{
             }
         }
 
-        stage("Python Setup"){
-            when{
-                expression { false }
-            }
+        stage("Pyton setup & Install depdendecies"){
             steps{
+                if(fileExists("requirements.txt")){
                 
-                sh '''
+                sh """
                     python3 --version
-                    python3 -m venv .venv
-                    . .venv/bin/activate
-                    pip install -r requirement.txt
+                    python3 -m venv ${VENV_DIR}
+                    source ${VENV_DIR}/bin/activate
+                    pip install -r requirements.txt
                     pip list
 
-                '''
+                """
+                }
+            }
+        }
+        stage("Test"){
+            steps{
+                sh """
+                    source ${VENV_DIR}/bin/activate && pytest -v
+                """
             }
         }
         stage("Docker image build"){
+            when{
+                expression {env.CD == "true" }
+            }
             steps{
                 withDockerRegistry(credentialsId: 'docker-credentials' , url: ''){
                 sh """
@@ -65,6 +77,9 @@ pipeline{
             }
         }
         stage("Image scan"){
+             when{
+                expression {env.CD == "true" }
+            }
             steps{
                 sh """
                     trivy image ${DOCKER_IMAGE_TAG} \
@@ -77,6 +92,9 @@ pipeline{
            
         }
         stage("Image push"){
+             when{
+                expression {env.CD == "true" }
+            }
             steps{
                 withDockerRegistry(credentialsId:'docker-credentials' , url:""){
                         sh """
@@ -86,9 +104,9 @@ pipeline{
             }
         }
         stage("Deploy"){
-            // when {
-            //     expression {false}
-            // }
+            when{
+                expression {env.CD == "true" }
+            }
             steps{
                 script{
                     input( message: "Do you want to deploy the container?" ,
