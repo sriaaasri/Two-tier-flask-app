@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y gcc default-libmysqlclient-dev pkg-conf
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirement.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # ENV MYSQL_HOST=flask.cjgm26qi2gu4.ap-south-2.rds.amazonaws.com
 # ENV MYSQL_USER=admin
