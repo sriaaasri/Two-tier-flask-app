@@ -95,7 +95,7 @@ pipeline{
                     --severity LOW,MEDIUM,HIGH \
                     --exit-code 0 \
                     --quiet  \
-                    --format template --template "@contrib/html.tpl -o trivy-image-scan-HIGH-results.html
+                    --format template --template "@contrib/html.tpl" -o trivy-image-scan-HIGH-results.html
                 """
             }
            
