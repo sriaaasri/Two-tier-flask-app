@@ -44,16 +44,18 @@ pipeline{
 
         stage("Pyton setup & Install depdendecies"){
             steps{
-                if(fileExists("requirements.txt")){
+                script{                
+                    if(fileExists("requirements.txt")){
                 
-                sh """
-                    python3 --version
-                    python3 -m venv ${VENV_DIR}
-                    source ${VENV_DIR}/bin/activate
-                    pip install -r requirements.txt
-                    pip list
+                    sh """
+                        python3 --version
+                        python3 -m venv ${VENV_DIR}
+                        source ${VENV_DIR}/bin/activate
+                        pip install -r requirements.txt
+                        pip list
 
-                """
+                    """
+                    }
                 }
             }
         }
