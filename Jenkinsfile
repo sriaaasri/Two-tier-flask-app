@@ -61,12 +61,20 @@ pipeline{
                 sh """
                     docker build -t '${DOCKER_IMAGE_TAG}' .
                 """
-
-                sh """
-                    docker push ${DOCKER_IMAGE_TAG}
-                """
                 }
             }
+        }
+        stage("Image scan"){
+            steps{
+                sh """
+                    trivy image ${DOCKER_IMAGE_TAG} \
+                    -- severity LOW,MEDIUM,HIGH \
+                    -- exit-code 0 \
+                    -- quite  \
+                    -- format json -o trivy-image-scan-HIGH-results.json
+                """
+            }
+           
         }
         stage("Deploy"){
             steps{
@@ -84,5 +92,9 @@ pipeline{
         }
     }
 
-
+    post{
+        always{
+            archiveArtifacts 'trivy-image-scan-HIGH-results.json'
+        }
+    }
 }
