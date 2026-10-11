@@ -140,7 +140,7 @@ pipeline{
                 reportDir: "./",
                 reportFiles: "trivy-image-scan-HIGH-results.json",
                 reportName: "trivy-image-scan-HIGH-results.html",
-                reportTitles: ""
+                reportTitles: "trivy-image-scan-HIGH-results"
             ])
         }
     }
