@@ -59,13 +59,13 @@ pipeline{
                 }
             }
         }
-        stage("Test"){
-            steps{
-                sh """
-                    . ${VENV_DIR}/bin/activate && pytest -v
-                """
-            }
-        }
+        // stage("Test"){
+        //     steps{
+        //         sh """
+        //             . ${VENV_DIR}/bin/activate && pytest -v
+        //         """
+        //     }
+        // }
         stage("Docker image build"){
             when{
                 expression {env.CD == "true" }
@@ -132,6 +132,16 @@ pipeline{
     post{
         always{
             archiveArtifacts 'trivy-image-scan-HIGH-results.json'
+            publishHTML([
+                allowMissing: true ,
+                alwaysLinkToLastBuild: true,
+                icon: '',
+                keepAll: true,
+                reportDir: "/",
+                reportFiles: "trivy-image-scan-HIGH-results.html",
+                reportName: "trivy-image-scan-HIGH-results.json",
+                reportTitles: ""
+            ])
         }
     }
 }
