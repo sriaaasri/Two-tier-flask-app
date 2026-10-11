@@ -70,7 +70,7 @@ pipeline{
                     trivy image ${DOCKER_IMAGE_TAG} \
                     --severity LOW,MEDIUM,HIGH \
                     --exit-code 0 \
-                    --quite  \
+                    --quiet  \
                     --format json -o trivy-image-scan-HIGH-results.json
                 """
             }
