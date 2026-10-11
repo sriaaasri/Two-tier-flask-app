@@ -86,10 +86,15 @@ pipeline{
             }
         }
         stage("Deploy"){
-            when {
-                expression {false}
-            }
+            // when {
+            //     expression {false}
+            // }
             steps{
+                script{
+                    input( message: "Do you want to deploy the container?" ,
+                            ok: "Yes"
+                            )
+                }
                 sshagent(['baston_prod_server']){
                     sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@16.113.15.205 "
