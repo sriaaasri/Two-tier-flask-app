@@ -95,7 +95,7 @@ pipeline{
                 
                  sh """
                     trivy image ${DOCKER_IMAGE_TAG} \
-                    --severity LOW,MEDIUM,HIGH \
+                    --severity HIGH,CRITICAL \
                     --exit-code 0 \
                     --quiet  \
                     --format template --template "@html.tpl" -o trivy-image-scan-HIGH-results.html
