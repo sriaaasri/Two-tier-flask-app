@@ -67,9 +67,9 @@ pipeline{
         //     }
         // }
         stage("Docker image build"){
-            when{
-                expression {env.CD == "true" }
-            }
+            // when{
+            //     expression {env.CD == "true" }
+            // }
             steps{
                 withDockerRegistry(credentialsId: 'docker-credentials' , url: ''){
                 sh """
@@ -79,16 +79,23 @@ pipeline{
             }
         }
         stage("Image scan"){
-             when{
-                expression {env.CD == "true" }
-            }
+            //  when{
+            //     expression {env.CD == "true" }
+            // }
             steps{
-                sh """
+                // sh """
+                //     trivy image ${DOCKER_IMAGE_TAG} \
+                //     --severity LOW,MEDIUM,HIGH \
+                //     --exit-code 0 \
+                //     --quiet  \
+                //     --format json -o trivy-image-scan-HIGH-results.json
+                // """
+                 sh """
                     trivy image ${DOCKER_IMAGE_TAG} \
                     --severity LOW,MEDIUM,HIGH \
                     --exit-code 0 \
                     --quiet  \
-                    --format json -o trivy-image-scan-HIGH-results.json
+                    --format template --template "@contrib/html.tpl -o trivy-image-scan-HIGH-results.html
                 """
             }
            
@@ -131,15 +138,15 @@ pipeline{
 
     post{
         always{
-            archiveArtifacts 'trivy-image-scan-HIGH-results.json'
+            archiveArtifacts 'trivy-image-scan-HIGH-results.html'
             publishHTML([
-                allowMissing: true ,
+                allowMissing: false ,
                 alwaysLinkToLastBuild: true,
                 icon: '',
                 keepAll: true,
                 reportDir: "./",
-                reportFiles: "trivy-image-scan-HIGH-results.json",
-                reportName: "trivy-image-scan-HIGH-results.html",
+                reportFiles: "trivy-image-scan-HIGH-results.html",
+                reportName: "trivy-image-scan-HIGH-results",
                 reportTitles: "trivy-image-scan-HIGH-results"
             ])
         }
