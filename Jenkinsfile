@@ -137,7 +137,7 @@ pipeline{
                 alwaysLinkToLastBuild: true,
                 icon: '',
                 keepAll: true,
-                reportDir: "/",
+                reportDir: "./",
                 reportFiles: "trivy-image-scan-HIGH-results.html",
                 reportName: "trivy-image-scan-HIGH-results.json",
                 reportTitles: ""
