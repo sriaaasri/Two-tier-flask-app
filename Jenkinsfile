@@ -68,10 +68,10 @@ pipeline{
             steps{
                 sh """
                     trivy image ${DOCKER_IMAGE_TAG} \
-                    -- severity LOW,MEDIUM,HIGH \
-                    -- exit-code 0 \
-                    -- quite  \
-                    -- format json -o trivy-image-scan-HIGH-results.json
+                    --severity LOW,MEDIUM,HIGH \
+                    --exit-code 0 \
+                    --quite  \
+                    --format json -o trivy-image-scan-HIGH-results.json
                 """
             }
            
