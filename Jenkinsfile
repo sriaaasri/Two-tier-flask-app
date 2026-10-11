@@ -90,12 +90,15 @@ pipeline{
                 //     --quiet  \
                 //     --format json -o trivy-image-scan-HIGH-results.json
                 // """
+
+                sh "wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl"
+                
                  sh """
                     trivy image ${DOCKER_IMAGE_TAG} \
                     --severity LOW,MEDIUM,HIGH \
                     --exit-code 0 \
                     --quiet  \
-                    --format template --template "@contrib/html.tpl" -o trivy-image-scan-HIGH-results.html
+                    --format template --template "@html.tpl" -o trivy-image-scan-HIGH-results.html
                 """
             }
            
