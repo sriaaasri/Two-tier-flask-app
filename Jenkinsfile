@@ -12,6 +12,13 @@ pipeline{
         VENV_DIR = ".venv"
         CI = true
         CD = false
+        MYSQL_HOST="mysql-dev-database-9900-psatyachowdary2001-ccba.c.aivencloud.com"
+        MYSQL_USER=avnadmin
+        MYSQL_PASSWORD=credentials('aiven-mysql-db-password')
+        MYSQL_DATABASE=flask
+        SSL_CA="ca.pem"
+        MYSQL_PORT=18447
+
     }
     options{
         timestamps()
@@ -59,13 +66,13 @@ pipeline{
                 }
             }
         }
-        // stage("Test"){
-        //     steps{
-        //         sh """
-        //             . ${VENV_DIR}/bin/activate && pytest -v
-        //         """
-        //     }
-        // }
+        stage("Test"){
+            steps{
+                sh """
+                    . ${VENV_DIR}/bin/activate && pytest -v
+                """
+            }
+        }
         stage("Docker image build"){
             // when{
             //     expression {env.CD == "true" }
@@ -79,9 +86,9 @@ pipeline{
             }
         }
         stage("Image scan"){
-            //  when{
-            //     expression {env.CD == "true" }
-            // }
+             when{
+                expression {env.CD == "true" }
+            }
             steps{
                 // sh """
                 //     trivy image ${DOCKER_IMAGE_TAG} \
@@ -104,9 +111,9 @@ pipeline{
            
         }
         stage("Image push"){
-             when{
-                expression {env.CD == "true" }
-            }
+            //  when{
+            //     expression {env.CD == "true" }
+            // }
             steps{
                 withDockerRegistry(credentialsId:'docker-credentials' , url:""){
                         sh """
@@ -116,9 +123,9 @@ pipeline{
             }
         }
         stage("Deploy"){
-            when{
-                expression {env.CD == "true" }
-            }
+            // when{
+            //     expression {env.CD == "true" }
+            // }
             steps{
                 script{
                     input( message: "Do you want to deploy the container?" ,
@@ -127,10 +134,10 @@ pipeline{
                 }
                 sshagent(['baston_prod_server']){
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@16.113.15.205 "
+                        ssh -o StrictHostKeyChecking=no ubuntu@16.113.15.205"
                             cd /home/ubuntu/flask-app
                             ls -l
-                            ./deploy.sh ${DOCKER_IMAGE_TAG}
+                            ./deploy.sh ${DOCKER_IMAGE_TAG} &>> deploy.log
                             docker ps
                         "
                     """

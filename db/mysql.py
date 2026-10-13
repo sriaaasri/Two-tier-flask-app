@@ -8,15 +8,17 @@ password=os.environ.get('MYSQL_PASSWORD')
 host=os.environ.get('MYSQL_HOST')
 database = os.environ.get('MYSQL_DATABASE')
 user=os.environ.get('MYSQL_USER')
+ssl_crt=os.environ.get('SSL_CA')
+port=os.environ.get('MYSQL_PORT')
 MYSQL_CONFIG = {
     "host": host,
-    "port":3306,
+    "port": port,
     "database":database,
     "user":user,
     "password":password,
     "ssl_disabled":False,
     "autocommit":True,
-    "ssl_ca":'./global-bundle.pem'
+    "ssl_ca":f"./{ssl_crt}"
 }
 
 rds_connection_pool = mysql.connector.pooling.MySQLConnectionPool(
