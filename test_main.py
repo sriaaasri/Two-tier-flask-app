@@ -13,3 +13,6 @@ def test_math():
     assert 2 ==2
 def test_string():
     assert "satya".upper() == "SATYA"
+
+def test_string():
+    assert "satya".upper() == "SATYA"
