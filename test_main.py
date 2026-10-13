@@ -1,6 +1,6 @@
 from app import app
 
-def temp_test_home():
+def test_home():
     try:
         tester = app.test_client()
         response = tester.get('/')

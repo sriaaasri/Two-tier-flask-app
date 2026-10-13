@@ -137,7 +137,7 @@ pipeline{
                         ssh -o StrictHostKeyChecking=no ubuntu@16.113.15.205"
                             cd /home/ubuntu/flask-app
                             ls -l
-                            ./deploy.sh ${DOCKER_IMAGE_TAG} &>> deploy.log
+                            ./deploy.sh ${DOCKER_IMAGE_TAG}
                             docker ps
                         "
                     """
@@ -149,16 +149,16 @@ pipeline{
     post{
         always{
             archiveArtifacts 'trivy-image-scan-HIGH-results.html'
-            publishHTML([
-                allowMissing: false ,
-                alwaysLinkToLastBuild: true,
-                icon: '',
-                keepAll: true,
-                reportDir: "./",
-                reportFiles: "trivy-image-scan-HIGH-results.html",
-                reportName: "trivy-image-scan-HIGH-results",
-                reportTitles: "trivy-image-scan-HIGH-results"
-            ])
+            // publishHTML([
+            //     allowMissing: false ,
+            //     alwaysLinkToLastBuild: true,
+            //     icon: '',
+            //     keepAll: true,
+            //     reportDir: "./",
+            //     reportFiles: "trivy-image-scan-HIGH-results.html",
+            //     reportName: "trivy-image-scan-HIGH-results",
+            //     reportTitles: "trivy-image-scan-HIGH-results"
+            // ])
         }
     }
 }
