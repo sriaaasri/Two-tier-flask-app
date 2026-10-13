@@ -13,11 +13,11 @@ pipeline{
         CI = true
         CD = false
         MYSQL_HOST="mysql-dev-database-9900-psatyachowdary2001-ccba.c.aivencloud.com"
-        MYSQL_USER=avnadmin
+        MYSQL_USER="avnadmin"
         MYSQL_PASSWORD=credentials('aiven-mysql-db-password')
-        MYSQL_DATABASE=flask
+        MYSQL_DATABASE="flask"
         SSL_CA="ca.pem"
-        MYSQL_PORT=18447
+        MYSQL_PORT="18447"
 
     }
     options{
