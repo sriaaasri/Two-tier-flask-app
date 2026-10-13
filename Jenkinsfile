@@ -134,7 +134,7 @@ pipeline{
                 }
                 sshagent(['baston_prod_server']){
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@16.113.15.205"
+                        ssh -o StrictHostKeyChecking=no ubuntu@16.113.74.85"
                             cd /home/ubuntu/flask-app
                             ls -l
                             ./deploy.sh ${DOCKER_IMAGE_TAG}
